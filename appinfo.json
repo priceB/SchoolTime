@@ -1,0 +1,105 @@
+{
+    "appKeys": {
+        "aInfo": 34,
+        "backcolor": 46,
+        "bat": 33,
+        "batcolor": 44,
+        "blue": 32,
+        "bluea": 36,
+        "bluecolor": 45,
+        "c1N": 21,
+        "c2N": 22,
+        "c3N": 23,
+        "c4N": 24,
+        "c5N": 25,
+        "c6N": 26,
+        "c7N": 27,
+        "c8N": 28,
+        "classNames": 35,
+        "dcolor": 41,
+        "lcolor": 42,
+        "periodcolor": 47,
+        "sday": 29,
+        "tcolor": 43,
+        "tcolorc": 48,
+        "watch": 40,
+        "wmode": 30
+    },
+    "capabilities": [
+        "configurable"
+    ],
+    "companyName": "Ben624",
+    "longName": "SchoolTime",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/phone_white.png",
+                "name": "IMAGE_PHONE_WHITE",
+                "type": "png"
+            },
+            {
+                "file": "images/phone_black.png",
+                "name": "IMAGE_PHONE_BLACK",
+                "type": "png"
+            },
+            {
+                "file": "images/notconnectedwhite.png",
+                "name": "IMAGE_NOT_CONNECTED_WHITE",
+                "type": "png"
+            },
+            {
+                "file": "images/notconnectedblack.png",
+                "name": "IMAGE_NOT_CONNECTED_BLACK",
+                "type": "png"
+            },
+            {
+                "file": "images/connectedwhite.png",
+                "name": "IMAGE_CONNECTED_WHITE",
+                "type": "png"
+            },
+            {
+                "file": "images/connectedblack.png",
+                "name": "IMAGE_CONNECTED_BLACK",
+                "type": "png"
+            },
+            {
+                "file": "images/schoolicon.png",
+                "menuIcon": true,
+                "name": "IMAGE_MENU_ICON",
+                "type": "png"
+            },
+            {
+                "file": "fonts/RobotoCondensed-Regular.ttf",
+                "name": "FONT_ROBOTO_CONDENSED_REGULAR_SUBSET_22",
+                "type": "font"
+            },
+            {
+                "file": "fonts/Roboto-BoldCondensed.ttf",
+                "name": "FONT_ROBOTO_CONDENSED_SUBSET_17",
+                "type": "font"
+            },
+            {
+                "file": "fonts/Roboto-BoldCondensed.ttf",
+                "name": "FONT_ROBOTO_CONDENSED_SUBSET_36",
+                "type": "font"
+            },
+            {
+                "file": "fonts/Roboto-BoldCondensed.ttf",
+                "name": "FONT_ROBOTO_CONDENSED_SUBSET_19",
+                "type": "font"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "SchoolTime",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "0e99df4c-5a8f-44f3-bdfa-31a8bc14139f",
+    "versionLabel": "3.3",
+    "watchapp": {
+        "watchface": true
+    }
+}
