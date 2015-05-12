@@ -170,7 +170,8 @@ void boot_animation(){
 	GRect dateStart =  GRect(350, 54, 144 - 6, 30);
 	GRect dateFinish = GRect(2, 54, 144 - 6, 30);
     animate_layer(text_layer_get_layer(text_date_layer), &dateStart, &dateFinish, 1100, 10);
-	GRect clockStart = GRect(2, -200, 144 - 7, 55);
+	
+	GRect clockStart = GRect(-200,70, 144 - 7, 55);
 	GRect clockFinish =GRect(2, 70, 144 - 7, 55);
     animate_layer(text_layer_get_layer(text_time_layer), &clockStart, &clockFinish, 1400,20);
 	
