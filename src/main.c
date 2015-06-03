@@ -1,6 +1,7 @@
 #include "pebble.h"
 #include "colors.h"
-
+#include "gbitmap_color_palette_manipulator.h"
+	
 #define SUNDAY    0
 #define MONDAY    1
 #define TUESDAY   2
@@ -166,14 +167,14 @@ void bottom_line_layer_update_callback(Layer *layer, GContext* ctx) {
 void boot_animation(){
 	GRect dayStart  = GRect(350, 34, 144 - 6, 30);
 	GRect dayFinish = GRect(2, 34, 144 - 6, 30);
-    animate_layer(text_layer_get_layer(text_day_layer), &dayStart, &dayFinish, 1100, 20);
+    animate_layer(text_layer_get_layer(text_day_layer), &dayStart, &dayFinish, 1600, 20);
 	GRect dateStart =  GRect(350, 54, 144 - 6, 30);
 	GRect dateFinish = GRect(2, 54, 144 - 6, 30);
-    animate_layer(text_layer_get_layer(text_date_layer), &dateStart, &dateFinish, 1100, 10);
+    animate_layer(text_layer_get_layer(text_date_layer), &dateStart, &dateFinish, 1600, 10);
 	
 	GRect clockStart = GRect(-200,70, 144 - 7, 55);
 	GRect clockFinish =GRect(2, 70, 144 - 7, 55);
-    animate_layer(text_layer_get_layer(text_time_layer), &clockStart, &clockFinish, 1400,20);
+    animate_layer(text_layer_get_layer(text_time_layer), &clockStart, &clockFinish, 1600,20);
 	
 	GRect periodStart = GRect(2, 300, 144 - 7, 90);
 	GRect periodFinish =GRect(2, 108, 144 - 7, 90);
@@ -395,6 +396,14 @@ void handle_bluetooth_change(bool isconnected){
 	else
 	layer_set_hidden(bitmap_layer_get_layer(bluetooth_on_layer), false);
 
+	/*#ifdef PBL_COLOR
+		bitmap_layer_set_bitmap(bluetooth_on_layer, gbitmap_create_with_resource(RESOURCE_ID_IMAGE_CONNECTED_WHITE));
+		replace_gbitmap_color(GColorWhite, GColorOrange, bluetooth_on_bitmap, bluetooth_on_layer);
+		replace_gbitmap_color(GColorBlack, GColorOrange, bluetooth_on_bitmap, bluetooth_on_layer);
+		replace_gbitmap_color(GColorClear, GColorOrange, bluetooth_on_bitmap, bluetooth_on_layer);
+		replace_gbitmap_color(GColorOrange, GColorWhite, bluetooth_on_bitmap, bluetooth_on_layer);
+
+	#endif*/
 }
 
 
@@ -648,7 +657,7 @@ void handle_init(void) {
     app_message_init();
     readConfig();
     //Date
-    text_date_layer = text_layer_create(GRect(2, 54, 144 - 6, 30));
+    text_date_layer = text_layer_create(GRect(350, 54, 144 - 6, 30));
     text_layer_set_text_color(text_date_layer, GColorBlack);
     text_layer_set_background_color(text_date_layer, GColorClear);
     text_layer_set_font(text_date_layer,
@@ -658,7 +667,7 @@ void handle_init(void) {
     layer_add_child(window_layer, text_layer_get_layer(text_date_layer));
     
     //DAY
-    text_day_layer = text_layer_create(GRect(2, 34, 144 - 6, 30));
+    text_day_layer = text_layer_create(GRect(350, 34, 144 - 6, 30));
    text_layer_set_text_color(text_day_layer, GColorBlack);
     text_layer_set_background_color(text_day_layer, GColorClear);
     text_layer_set_font(text_day_layer,
@@ -668,7 +677,7 @@ void handle_init(void) {
     layer_add_child(window_layer, text_layer_get_layer(text_day_layer));
 	
     //time
-    text_time_layer = text_layer_create(GRect(2, 70, 144 - 7, 55));
+    text_time_layer = text_layer_create(GRect(-200,70, 144 - 7, 55));
     text_layer_set_text_color(text_time_layer, GColorBlack);
     text_layer_set_background_color(text_time_layer, GColorClear);
     text_layer_set_font(text_time_layer,
@@ -678,7 +687,7 @@ void handle_init(void) {
     layer_add_child(window_layer, text_layer_get_layer(text_time_layer));
 	
     //Period
-    text_time_period_info = text_layer_create(GRect(2, 108, 144 - 7, 90));
+    text_time_period_info = text_layer_create(GRect(2, 300, 144 - 7, 90));
     text_layer_set_text_color(text_time_period_info, GColorBlack);
    text_layer_set_background_color(text_time_period_info, GColorClear);
    text_layer_set_font(text_time_period_info,
@@ -687,7 +696,7 @@ void handle_init(void) {
     RESOURCE_ID_FONT_ROBOTO_CONDENSED_SUBSET_19)));
     layer_add_child(window_layer, text_layer_get_layer(text_time_period_info));
     //Battery
-    text_battery_info = text_layer_create(GRect(70, 0, 144 - 7, 90));
+    text_battery_info = text_layer_create(GRect(70, -100, 144 - 7, 90));
     text_layer_set_text_color(text_battery_info, GColorBlack);
     text_layer_set_background_color(text_battery_info, GColorClear);
     text_layer_set_font(text_battery_info,
@@ -695,15 +704,15 @@ void handle_init(void) {
     layer_add_child(window_layer, text_layer_get_layer(text_battery_info));
     
     //BLUETOOTH
-    text_bluetooth_info = text_layer_create(GRect(2, 0, 144 - 7, 90));
+    text_bluetooth_info = text_layer_create(GRect(-10, -100, 48, 48));
     text_layer_set_text_color(text_bluetooth_info, GColorBlack);
     text_layer_set_background_color(text_bluetooth_info, GColorClear);
     text_layer_set_font(text_bluetooth_info,
     fonts_get_system_font(FONT_KEY_GOTHIC_18));
   //  layer_add_child(window_layer, text_layer_get_layer(text_bluetooth_info));
     
-    GRect top_line_frame = GRect(0, 76, 180, 2);
-    GRect bottom_line_frame = GRect(0, 108, 180, 2);
+    GRect top_line_frame = GRect(200, 76, 180, 2);
+    GRect bottom_line_frame = GRect(-200, 108, 180, 2);
     top_line_layer = layer_create(top_line_frame);
     bottom_line_layer = layer_create(bottom_line_frame);
     layer_set_update_proc(top_line_layer, top_line_layer_update_callback);

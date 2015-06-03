@@ -33,8 +33,8 @@ Pebble.addEventListener("showConfiguration",
 	    urlString += '&periodcolor=' + window.localStorage.getItem('periodcolor');
 
      
-//	console.log("URL OPENING IS...")
-//    console.log(urlString);
+	console.log("URL OPENING IS...")
+    console.log(urlString);
 	Pebble.openURL(urlString);
     return urlString;
   }
@@ -77,5 +77,3 @@ Pebble.addEventListener("webviewclosed",
 	 Pebble.sendAppMessage(options);
 	 }
   });
-
-
