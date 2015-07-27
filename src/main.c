@@ -1,6 +1,5 @@
 #include "pebble.h"
 #include "colors.h"
-#include "gbitmap_color_palette_manipulator.h"
 	
 #define SUNDAY    0
 #define MONDAY    1
@@ -54,6 +53,7 @@ struct appearanceInfo {
 	int alarm;
 	int battery;
 	int alarmRung;
+	int break_mode;
 	char dateColor[10];
 	char lineColor[10];
 	char timeColor[10];
@@ -74,45 +74,45 @@ struct periodInfo {
 
 
 struct periodInfo normalInfo[] = { 
-    {1, TIME(7,25),  TIME(8,10)},
-	{2, TIME(8,15),  TIME(9,00)},
-	{3, TIME(9,05),  TIME(9,50)},
-	{4, TIME(9,55),  TIME(10,45)},
-	{5, TIME(10,50),  TIME(11,40)},
-	{6, TIME(11,45),  TIME(12,30)},
-	{7, TIME(12,35), TIME(13,20)},
-	{8, TIME(13,25), TIME(14,10)}
+    {1, TIME(7,45),  TIME(8,30)},
+	{2, TIME(8,35),  TIME(9,20)},
+	{3, TIME(9,25),  TIME(10,10)},
+	{4, TIME(10,15),  TIME(11,05)},
+	{5, TIME(11,10),  TIME(12,00)},
+	{6, TIME(12,05),  TIME(12,50)},
+	{7, TIME(12,55), TIME(13,40)},
+	{8, TIME(13,45), TIME(14,30)}
 };
 #define INFO_SIZE (sizeof(normalInfo)/sizeof(struct periodInfo))
 	
-#define NORMAL_START TIME(7,25)
-#define NORMAL_END   TIME(14,10)
+#define NORMAL_START TIME(7,45)
+#define NORMAL_END   TIME(14,30)
 
 struct periodInfo delayInfo[] = { 
-	{1, TIME(9,25),  TIME(9,55)},
-	{2, TIME(10,00),  TIME(10,30)},
-	{3, TIME(10,35),  TIME(11,10)},
-	{5, TIME(11,15),  TIME(11,50)},
-	{4, TIME(11,55),  TIME(12,25)},
-	{6, TIME(12,30),  TIME(13,00)},
-	{7, TIME(13,05), TIME(13,35)},
-	{8, TIME(13,40), TIME(14,10)}
+	{1, TIME(9,45),  TIME(10,15)},
+	{2, TIME(10,20),  TIME(10,50)},
+	{3, TIME(10,55),  TIME(11,30)},
+	{5, TIME(11,35),  TIME(12,10)},
+	{4, TIME(12,15),  TIME(12,45)},
+	{6, TIME(12,50),  TIME(13,20)},
+	{7, TIME(13,25), TIME(13,55)},
+	{8, TIME(14,00), TIME(14,30)}
 };
-#define DELAY_START  TIME(9,25)
-#define DELAY_END    TIME(14,10)
+#define DELAY_START  TIME(9,45)
+#define DELAY_END    TIME(14,30)
 
 struct periodInfo earlyRelInfo[] = {
-	{1, TIME(7,25),  TIME(7,50)},
-	{2, TIME(7,55),  TIME(8,20)},
-	{3, TIME(8,25),  TIME(8,50)},
-	{4, TIME(8,55),  TIME(9,20)},
-	{6, TIME(9,25),  TIME(9,50)},
-	{7, TIME(9,55),  TIME(10,20)},
-	{8, TIME(10,25), TIME(10,50)},
-	{8, TIME(10,55), TIME(11,30)}
+	{1, TIME(7,45),  TIME(8,10)},
+	{2, TIME(8,15),  TIME(8,40)},
+	{3, TIME(8,45),  TIME(9,10)},
+	{4, TIME(9,15),  TIME(9,40)},
+	{6, TIME(9,45),  TIME(10,10)},
+	{7, TIME(10,15),  TIME(10,40)},
+	{8, TIME(10,45), TIME(11,10)},
+	{5, TIME(11,15), TIME(11,50)}
 };
-#define EARLY_REL_START TIME(7,25)
-#define EARLY_REL_END   TIME(11,30)
+#define EARLY_REL_START TIME(7,45)
+#define EARLY_REL_END   TIME(11,50)
 
 // Initialize with defaults of "NORMAL" periods
 struct periodInfo *pinfo = normalInfo;
@@ -247,6 +247,10 @@ void handle_tick(struct tm *tick_time, TimeUnits units_changed) {
 		text_layer_set_text(text_day_layer, day_text);
 	}
 	
+	if(aInfo.break_mode == 1){
+		text_layer_set_text(text_time_period_info, "Break");
+
+	}else{
 
 	if (between_classes) {
 		if(canPlay){
@@ -324,6 +328,7 @@ void handle_tick(struct tm *tick_time, TimeUnits units_changed) {
 			text_layer_set_text(text_time_period_info, outline);
 	}
 }
+}
 
 static const uint32_t segments[] = { 400, 100, 400,100,400};
 VibePattern pat = {
@@ -333,7 +338,6 @@ VibePattern pat = {
 
 
 void handle_bluetooth_change(bool isconnected){
-		APP_LOG(APP_LOG_LEVEL_INFO,"BT TEXTCOLOR IS %d",aInfo.textColor);
 
 	#ifdef PBL_COLOR
 		if(isconnected){
@@ -396,14 +400,6 @@ void handle_bluetooth_change(bool isconnected){
 	else
 	layer_set_hidden(bitmap_layer_get_layer(bluetooth_on_layer), false);
 
-	/*#ifdef PBL_COLOR
-		bitmap_layer_set_bitmap(bluetooth_on_layer, gbitmap_create_with_resource(RESOURCE_ID_IMAGE_CONNECTED_WHITE));
-		replace_gbitmap_color(GColorWhite, GColorOrange, bluetooth_on_bitmap, bluetooth_on_layer);
-		replace_gbitmap_color(GColorBlack, GColorOrange, bluetooth_on_bitmap, bluetooth_on_layer);
-		replace_gbitmap_color(GColorClear, GColorOrange, bluetooth_on_bitmap, bluetooth_on_layer);
-		replace_gbitmap_color(GColorOrange, GColorWhite, bluetooth_on_bitmap, bluetooth_on_layer);
-
-	#endif*/
 }
 
 
@@ -515,19 +511,19 @@ void updateSchoolMode(){
 			pinfo        = normalInfo;
 			school_start = NORMAL_START;
 	 		school_end   = NORMAL_END;
-			APP_LOG(APP_LOG_LEVEL_WARNING, "NORMAL MODE Set");
+		//	APP_LOG(APP_LOG_LEVEL_WARNING, "NORMAL MODE Set");
 			break;
 		case DELAY:
 			pinfo        = delayInfo;
 			school_start = DELAY_START;
 	 		school_end   = DELAY_END;	
-			APP_LOG(APP_LOG_LEVEL_WARNING, "DELAY MODE Set");
+		//	APP_LOG(APP_LOG_LEVEL_WARNING, "DELAY MODE Set");
 			break;
 		case RELEASE:
 			pinfo = earlyRelInfo;
 			school_start = EARLY_REL_START;
 			school_end = EARLY_REL_END;
-			APP_LOG(APP_LOG_LEVEL_WARNING, "EARLY Release Set");
+		//	APP_LOG(APP_LOG_LEVEL_WARNING, "EARLY Release Set");
 			break;
 		default:
 			APP_LOG(APP_LOG_LEVEL_ERROR, "MODE Error");
@@ -552,6 +548,7 @@ void in_received_handler(DictionaryIterator *received, void *context) {
 	  Tuple *blue = dict_find(received, 32);
 	  Tuple *bluea = dict_find(received, 36);
 	  Tuple *bat = dict_find(received, 33);
+	  Tuple *brk = dict_find(received, 49);
 	
 	  Tuple *dcolor = dict_find(received, 41);
 	  Tuple *lcolor = dict_find(received, 42);
@@ -579,6 +576,9 @@ void in_received_handler(DictionaryIterator *received, void *context) {
 	
 	    if(bat->value->cstring[0] == 'y') aInfo.battery = YES; 
 	  	else aInfo.battery = NO;
+	
+		if(brk->value->cstring[0] == 'y') aInfo.break_mode = YES; 
+	  	else aInfo.break_mode = NO;
 	    
       strcpy(aInfo.backColor,backcolor->value->cstring);
       strcpy(aInfo.dateColor,dcolor->value->cstring);

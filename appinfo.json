@@ -7,6 +7,7 @@
         "blue": 32,
         "bluea": 36,
         "bluecolor": 45,
+        "breakmode": 49,
         "c1N": 21,
         "c2N": 22,
         "c3N": 23,
@@ -98,7 +99,7 @@
         "basalt"
     ],
     "uuid": "0e99df4c-5a8f-44f3-bdfa-31a8bc14139f",
-    "versionLabel": "3.7",
+    "versionLabel": "4",
     "watchapp": {
         "watchface": true
     }

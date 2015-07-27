@@ -31,6 +31,7 @@ Pebble.addEventListener("showConfiguration",
 	    urlString += '&bluecolor=' + window.localStorage.getItem('bluecolor');
 	    urlString += '&backcolor=' + window.localStorage.getItem('backcolor');
 	    urlString += '&periodcolor=' + window.localStorage.getItem('periodcolor');
+	    urlString += '&breakmode=' + window.localStorage.getItem('breakmode');
 
      
 	console.log("URL OPENING IS...")
@@ -72,6 +73,7 @@ Pebble.addEventListener("webviewclosed",
 	window.localStorage.setItem('bluecolor', encodeURIComponent(options.bluecolor));
 	window.localStorage.setItem('backcolor', encodeURIComponent(options.backcolor));
 	window.localStorage.setItem('periodcolor', encodeURIComponent(options.periodcolor));
+	window.localStorage.setItem('breakmode', encodeURIComponent(options.breakmode));
 
   
 	 Pebble.sendAppMessage(options);
