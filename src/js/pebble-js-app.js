@@ -1,11 +1,22 @@
+/*
+Copyright (c) 2015 , Ben624
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, 
+WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THIS APPLICATION CAN BE SHARED ACROSS OWNERS OF THE PEBBLE, BUT CAN NOT BE PUBLISHED ON THE PEBBLE APP STORE. 
+
+Permission to use, copy, or modify, this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
+*/
+
+//Javascript Ready.
 Pebble.addEventListener("ready",
     function(e) {
-      //  console.log("Javascript Opened");
 
 
     }
 );
-
+//Show configuration page and pass in values.
 Pebble.addEventListener("showConfiguration",
   function(e) {
 	  var urlString;
@@ -42,7 +53,7 @@ Pebble.addEventListener("showConfiguration",
 );
 
 
-
+//Save entered values
 Pebble.addEventListener("webviewclosed",
   function(e) {
 	 if(e.response.length <= 2){

@@ -1,3 +1,15 @@
+/*
+Copyright (c) 2015 , Ben624
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, 
+WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THIS APPLICATION CAN BE SHARED ACROSS OWNERS OF THE PEBBLE, BUT CAN NOT BE PUBLISHED ON THE PEBBLE APP STORE. 
+
+Permission to use, copy, or modify, this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
+*/
+
+
 #include "pebble.h"
 #include "colors.h"
 	
@@ -19,7 +31,7 @@
 #define RELEASE	  1
 #define DELAY	  2
 #define TIME(h,s) ((h*60) + s)
-// Forward references
+	
 void handle_battery_change(BatteryChargeState b);
 void handle_bluetooth_change(bool isconnected);
 void readConfig();
@@ -72,7 +84,19 @@ struct periodInfo {
 	int end;
 };
 
+//Don't mess with anything above here. 
 
+
+
+/*
+
+Enter the times for the normal bell schedule below.
+
+The structs below are in the following format. 
+{period number, START TIME(HOURS,MINUTES), END TIME(HOURS,MINUTES)}
+**NOTE THAT THE TIMES ARE IN 24HR
+**Period Names are set in the app configuration page. 
+*/
 struct periodInfo normalInfo[] = { 
     {1, TIME(7,45),  TIME(8,30)},
 	{2, TIME(8,35),  TIME(9,20)},
@@ -85,9 +109,13 @@ struct periodInfo normalInfo[] = {
 };
 #define INFO_SIZE (sizeof(normalInfo)/sizeof(struct periodInfo))
 	
-#define NORMAL_START TIME(7,45)
-#define NORMAL_END   TIME(14,30)
 
+#define NORMAL_START TIME(7,45)//Enter Normal Day Start Time
+#define NORMAL_END   TIME(14,30)//Enter Normal Day End Time
+
+	
+//The Delay info and early release info follow the same format as what was stated above. 
+//If your school does  not have either delay or early release, just leave it alone and don't select it in the config page. 
 struct periodInfo delayInfo[] = { 
 	{1, TIME(9,45),  TIME(10,15)},
 	{2, TIME(10,20),  TIME(10,50)},
@@ -98,8 +126,8 @@ struct periodInfo delayInfo[] = {
 	{7, TIME(13,25), TIME(13,55)},
 	{8, TIME(14,00), TIME(14,30)}
 };
-#define DELAY_START  TIME(9,45)
-#define DELAY_END    TIME(14,30)
+#define DELAY_START  TIME(9,45)//Enter Delay Day Start Time
+#define DELAY_END    TIME(14,30) //Enter Delay Day Start Time
 
 struct periodInfo earlyRelInfo[] = {
 	{1, TIME(7,45),  TIME(8,10)},
@@ -111,10 +139,9 @@ struct periodInfo earlyRelInfo[] = {
 	{8, TIME(10,45), TIME(11,10)},
 	{5, TIME(11,15), TIME(11,50)}
 };
-#define EARLY_REL_START TIME(7,45)
-#define EARLY_REL_END   TIME(11,50)
+#define EARLY_REL_START TIME(7,45) //Enter Early Release Day Start Time
+#define EARLY_REL_END   TIME(11,50) //Enter Early Release Day Start Time
 
-// Initialize with defaults of "NORMAL" periods
 struct periodInfo *pinfo = normalInfo;
 static int school_start = NORMAL_START;
 static int school_end   = NORMAL_END;
@@ -123,10 +150,9 @@ static int school_end   = NORMAL_END;
 
 
 
-
+//Animation(Boot Animation) Stopped Handler 
 void on_animation_stopped(Animation *anim, bool finished, void *context)
 {
-    //Free the memoery used by the Animation
     property_animation_destroy((PropertyAnimation*) anim);
 }
 void animate_layer(Layer *layer, GRect *start, GRect *finish, int duration, int delay)
@@ -145,6 +171,7 @@ void animate_layer(Layer *layer, GRect *start, GRect *finish, int duration, int 
 	
 }
 
+//Top line across screen below date. 
 void top_line_layer_update_callback(Layer *layer, GContext* ctx) {
 	#ifdef PBL_COLOR
 	graphics_context_set_fill_color(ctx, GColorFromHEX(findColor(aInfo.lineColor)));	
@@ -154,6 +181,7 @@ void top_line_layer_update_callback(Layer *layer, GContext* ctx) {
 	#endif
 	graphics_fill_rect(ctx, layer_get_bounds(layer), 0, GCornerNone);
 }
+//Bottom line across screen below time.
 void bottom_line_layer_update_callback(Layer *layer, GContext* ctx) {
 	#ifdef PBL_COLOR
 	graphics_context_set_fill_color(ctx, GColorFromHEX(findColor(aInfo.lineColor)));	
@@ -163,7 +191,7 @@ void bottom_line_layer_update_callback(Layer *layer, GContext* ctx) {
 	#endif
     graphics_fill_rect(ctx, layer_get_bounds(layer), 0, GCornerNone);
 }
-
+//Boot animation... change this to change the boot animation. 
 void boot_animation(){
 	GRect dayStart  = GRect(350, 34, 144 - 6, 30);
 	GRect dayFinish = GRect(2, 34, 144 - 6, 30);
@@ -200,7 +228,7 @@ void boot_animation(){
 
 
 
-
+//Tick handler... Don't mess with this unless you know what to do :) 
 
 void handle_tick(struct tm *tick_time, TimeUnits units_changed) {
 	if (firstrun) {
@@ -330,13 +358,14 @@ void handle_tick(struct tm *tick_time, TimeUnits units_changed) {
 }
 }
 
+//Bluetooth Connection loss vibration. Change this if you want a different vibration when bluetooth lost. 
 static const uint32_t segments[] = { 400, 100, 400,100,400};
 VibePattern pat = {
   .durations = segments,
   .num_segments = ARRAY_LENGTH(segments),
 };
 
-
+//Bluetooth handler. There shouldn't be a need to mess with this. 
 void handle_bluetooth_change(bool isconnected){
 
 	#ifdef PBL_COLOR
@@ -402,6 +431,7 @@ void handle_bluetooth_change(bool isconnected){
 
 }
 
+//Battery handler. There shouldn't be a need to mess with this. 
 
 void handle_battery_change(BatteryChargeState b) {
     static char outline[40];
@@ -420,19 +450,13 @@ void handle_battery_change(BatteryChargeState b) {
     }
         
 
-
-
-//////////////*********CONFIG START***************////////////////////////
-
-
-
-
+//Configuration handlers start
 void in_dropped_handler(AppMessageResult reason, void *context) {
     APP_LOG(APP_LOG_LEVEL_ERROR, "Message Dropped!");
 }
 
 
-void updateColors(){//GColorFromHEX(findColor(aInfo.normalBack))
+void updateColors(){
 	#ifdef PBL_COLOR
 		window_set_background_color(window, GColorFromHEX(findColor(aInfo.backColor)));
 		text_layer_set_text_color(text_date_layer, GColorFromHEX(findColor(aInfo.dateColor)));
@@ -490,7 +514,6 @@ void updateClock(){
         tick_timer_service_subscribe(SECOND_UNIT, handle_tick);
     }
 	
-//TEXT SIZE
 	
 if(aInfo.clockStyle == MINUTES){
 text_layer_set_font(text_time_period_info,
@@ -511,19 +534,16 @@ void updateSchoolMode(){
 			pinfo        = normalInfo;
 			school_start = NORMAL_START;
 	 		school_end   = NORMAL_END;
-		//	APP_LOG(APP_LOG_LEVEL_WARNING, "NORMAL MODE Set");
 			break;
 		case DELAY:
 			pinfo        = delayInfo;
 			school_start = DELAY_START;
 	 		school_end   = DELAY_END;	
-		//	APP_LOG(APP_LOG_LEVEL_WARNING, "DELAY MODE Set");
 			break;
 		case RELEASE:
 			pinfo = earlyRelInfo;
 			school_start = EARLY_REL_START;
 			school_end = EARLY_REL_END;
-		//	APP_LOG(APP_LOG_LEVEL_WARNING, "EARLY Release Set");
 			break;
 		default:
 			APP_LOG(APP_LOG_LEVEL_ERROR, "MODE Error");
@@ -626,10 +646,11 @@ void readConfig() {
 	}
 	
 	
-      //  APP_LOG(APP_LOG_LEVEL_DEBUG, "READ IN");
-
+//Config handlers end
 }
 
+
+//Appmessage for receiving js code. 
 static void app_message_init(void) {
     app_message_register_inbox_received(in_received_handler);
     app_message_register_inbox_dropped(in_dropped_handler);
@@ -637,6 +658,7 @@ static void app_message_init(void) {
     
 }
 
+//Watchface close handler 
 void handle_deinit(void) {
 	persist_write_data(34, &aInfo, sizeof(aInfo));
     persist_write_data(35, cNames,sizeof(cNames));// Saves class names
@@ -647,7 +669,7 @@ void handle_deinit(void) {
 }
 
 
-
+// Initial Init handler 
 void handle_init(void) {
     window = window_create();
     window_stack_push(window, true);
@@ -743,6 +765,8 @@ layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(bluetooth_
         tick_timer_service_subscribe(SECOND_UNIT, handle_tick);
     }
 }
+
+//Main
 int main(void) {
     handle_init();
     
