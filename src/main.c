@@ -98,10 +98,10 @@ The structs below are in the following format.
 **Period Names are set in the app configuration page. 
 */
 struct periodInfo normalInfo[] = { 
-    {1, TIME(7,45),  TIME(8,30)},
-	{2, TIME(8,35),  TIME(9,20)},
-	{3, TIME(9,25),  TIME(10,10)},
-	{4, TIME(10,15),  TIME(11,05)},
+    {1, TIME(8,35),  TIME(9,30)},
+	{2, TIME(8,35),  TIME(9,35)},
+	{3, TIME(9,48),  TIME(10,48)},
+	{4, TIME(10,54),  TIME(11,54)},
 	{5, TIME(11,10),  TIME(12,00)},
 	{6, TIME(12,05),  TIME(12,50)},
 	{7, TIME(12,55), TIME(13,40)},
