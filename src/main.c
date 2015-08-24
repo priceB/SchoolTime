@@ -101,9 +101,9 @@ struct periodInfo normalInfo[] = {
     {1, TIME(8,35),  TIME(9,30)},
 	{2, TIME(8,35),  TIME(9,35)},
 	{3, TIME(9,48),  TIME(10,48)},
-	{4, TIME(10,54),  TIME(11,54)},
-	{5, TIME(11,10),  TIME(12,00)},
-	{6, TIME(12,05),  TIME(12,50)},
+	{4, TIME(12,00),  TIME(13,33)},
+	{5, TIME(13,39),  TIME(14,39)},
+	{6, TIME(14,45),  TIME(15,45)},
 	{7, TIME(12,55), TIME(13,40)},
 	{8, TIME(13,45), TIME(14,30)}
 };
